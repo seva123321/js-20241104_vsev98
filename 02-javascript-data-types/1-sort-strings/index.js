@@ -4,21 +4,19 @@
  * @param {string} [param="asc"] param - the sorting type "asc" or "desc"
  * @returns {string[]}
  */
-export function sortStrings(arr = [], param = 'asc') {
-  const directions = {
-    asc: 1,
-    desc: -1
-  };
-  const direction = directions[param];
+export function sortStrings(arr = [], param = "asc") {
+  let result = arr.toSorted((a, b) => {
+    if (param === "asc") {
 
-  if (direction === undefined) {
-    throw new Error(`There is no direction for passed "${param}"`);
-  }
+      let compare = a.localeCompare(b);
+      return a.toLowerCase() === b.toLowerCase() ? -compare : compare;
 
-  return makeSorting(arr, direction);
+    } else if (param === "desc") {
+      return b.localeCompare(a);
+    }
+  });
+  return result;
 }
 
-function makeSorting(array, direction) {
-  return [...array].sort((string1, string2) =>
-    direction * string1.localeCompare(string2, ['ru', 'en'], {caseFirst: 'upper'}));
-}
+
+
